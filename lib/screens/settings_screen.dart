@@ -23,6 +23,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey[100],
+          ),
+          onPressed: () {
+            Navigator.pop(context, color);
+          },
+        ),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
@@ -63,15 +72,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
           ),
-          FlatButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            color: Colors.grey[800],
-            textColor: Colors.white,
-            child: Text('Submit'),
-            onPressed: () {
-              Navigator.pop(context, color);
-            },
-          )
         ],
       ),
     );
