@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:painter/screens/settings_screen.dart';
+import 'package:painter/services/group_points.dart';
 import 'package:painter/services/painter.dart';
 
 import '../services/bar_button.dart';
@@ -12,13 +13,13 @@ class CanvasScreen extends StatefulWidget {
 }
 
 class _CanvasScreenState extends State<CanvasScreen> {
-  final _offsets = <Offset>[];
+  List<GroupPoints> points = <GroupPoints>[];
   double size = 3.0;
   Color color = Colors.black;
   Painter _painter;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     if (_painter != null) {
       setState(() {
@@ -29,7 +30,7 @@ class _CanvasScreenState extends State<CanvasScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _painter = Painter(size: size, offsets: _offsets, color: color);
+    _painter = Painter(size: size, offsets: points, color: color);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -41,7 +42,7 @@ class _CanvasScreenState extends State<CanvasScreen> {
             ),
             onPressed: () {
               setState(() {
-                _offsets.clear();
+                points.clear();
               });
             },
           ),
@@ -74,18 +75,17 @@ class _CanvasScreenState extends State<CanvasScreen> {
         child: GestureDetector(
           onPanDown: (details) {
             setState(() {
-              _offsets.add(details.localPosition);
             });
           },
           onPanUpdate: (details) {
             setState(() {
-              print(this.color.toString());
-              _offsets.add(details.localPosition);
+              points.add(
+                  GroupPoints(offset: details.localPosition, color: color));
             });
           },
           onPanEnd: (details) {
             setState(() {
-              _offsets.add(null);
+              points.add(GroupPoints(offset: null, color: color));
             });
           },
           child: Center(
