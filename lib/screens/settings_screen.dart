@@ -69,7 +69,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             textColor: Colors.white,
             child: Text('Submit'),
             onPressed: () {
-              print('color: $color');
               Navigator.pop(context, color);
             },
           )
