@@ -1,5 +1,5 @@
-import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -7,8 +7,16 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  Color color = Colors.black;
+  Color color;
   double size;
+
+  @override
+  void initState() {
+    super.initState();
+    if (color == null) {
+      color = Colors.black;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: Container(
               width: 20.0,
               height: 20.0,
-              color: color,
+              color: this.color,
             ),
             onTap: () {
               showMaterialColorPicker(
@@ -49,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             child: Divider(
-              height: 5.0,
+              height: 9.0,
               thickness: 1.5,
               color: Colors.black,
             ),
