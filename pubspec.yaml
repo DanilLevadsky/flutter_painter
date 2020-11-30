@@ -16,6 +16,7 @@ dependencies:
   flutter_icons: ^1.1.0
   desktop_window: ^0.3.0
   flutter_material_pickers: ^1.8.1
+  flex_color_picker: ^1.1.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,10 @@
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:painter/screens/settings_screen.dart';
 import 'package:painter/services/group_points.dart';
 import 'package:painter/services/painter.dart';
 
 import '../services/bar_button.dart';
+import 'settings_screen.dart';
 
 class CanvasScreen extends StatefulWidget {
   @override
@@ -45,12 +46,6 @@ class _CanvasScreenState extends State<CanvasScreen> {
               });
             },
           ),
-          BarButton(
-            icon: Icon(Icons.save, color: Colors.grey[100]),
-            onPressed: () {
-              //TODO: implement saving file
-            },
-          )
         ],
         backgroundColor: Colors.grey[800],
         title: null,
@@ -59,15 +54,13 @@ class _CanvasScreenState extends State<CanvasScreen> {
             Icons.brush,
             color: Colors.grey[100],
           ),
-          onPressed: () async {
-            var settings = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SettingsScreen(
-                          size: size,
-                          color: color,
-                        )));
-            setState(() {
+          onPressed: () {
+            setState(() async {
+              var settings = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SettingsScreen(color: color, size: size)));
               this.color = settings['color'];
               this.size = settings['size'];
             });
@@ -107,5 +100,56 @@ class _CanvasScreenState extends State<CanvasScreen> {
         ),
       ),
     );
+  }
+
+  void settings() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ColorPicker(
+                    onColorChanged: (value) {
+                      this.color = value;
+                    },
+                  ),
+                  Slider(
+                    value: size,
+                    onChangeStart: (value) {
+                      setState(() {
+                        size = value;
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        size = value;
+                      });
+                    },
+                    min: 1.0,
+                    max: 15.0,
+                    divisions: 15,
+                    inactiveColor: Colors.white,
+                    activeColor: Color.fromARGB(255, 100, 100, 100),
+                    label: 'Size',
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 30.0, color: Colors.white),
+                        )),
+                    color: Colors.grey[800],
+                    padding: EdgeInsets.all(8.0),
+                  )
+                ]),
+          );
+        });
   }
 }

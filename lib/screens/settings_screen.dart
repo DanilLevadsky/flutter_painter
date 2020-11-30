@@ -1,11 +1,11 @@
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 
 class SettingsScreen extends StatefulWidget {
-  final double size;
   final Color color;
+  final double size;
 
-  const SettingsScreen({this.size, this.color});
+  const SettingsScreen({this.color, this.size});
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -18,94 +18,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.color == null) {
-      color = Colors.black;
-    }
-    if (widget.size == null) {
-      size = 3.0;
-    }
-    if (widget.color != null && widget.size != null) {
-      size = widget.size;
-      color = widget.color;
-    }
+    widget.color != null ? color = widget.color : color = Colors.black;
+    widget.size != null ? size = widget.size : size = 3.0;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey[800],
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.grey[100],
-          ),
-          onPressed: () {
-            Navigator.pop(context, {'color': color, 'size': size});
+      backgroundColor: Colors.white,
+      body: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        ColorPicker(
+          color: color,
+          onColorChanged: (value) {
+            this.color = value;
           },
         ),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ListTile(
-            leading: Icon(
-              Icons.palette_outlined,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Color',
-              style: TextStyle(color: Colors.black),
-            ),
-            trailing: Container(
-              width: 20.0,
-              height: 20.0,
-              color: this.color,
-            ),
-            onTap: () {
-              getColor();
-            },
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: Divider(
-              height: 9.0,
-              thickness: 1.5,
-              color: Colors.black,
-            ),
-          ),
-          Slider(
-            value: size,
-            onChanged: (value) {
-              setState(() {
-                size = value;
-              });
-            },
-            min: 1.0,
-            max: 15.0,
-            divisions: 15,
-
-            inactiveColor: Colors.white,
-            activeColor: Color.fromARGB(255, 100, 100, 100),
-            label: 'Size',
-
-          )
-        ],
-      ),
+        Slider(
+          value: size,
+          onChangeStart: (value) {
+            setState(() {
+              size = value;
+            });
+          },
+          onChanged: (value) {
+            setState(() {
+              size = value;
+            });
+          },
+          min: 1.0,
+          max: 15.0,
+          divisions: 15,
+          inactiveColor: Colors.white,
+          activeColor: Color.fromARGB(255, 100, 100, 100),
+          label: 'Size',
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop({'color': color, 'size': size});
+          },
+          child: Container(
+              margin: EdgeInsets.all(8.0),
+              child: Text(
+                'Submit',
+                style: TextStyle(fontSize: 30.0, color: Colors.white),
+              )),
+          color: Colors.grey[800],
+          padding: EdgeInsets.all(8.0),
+        )
+      ]),
     );
-  }
-
-  void getColor() {
-    showMaterialColorPicker(
-        headerColor: Colors.grey[800],
-        buttonTextColor: Colors.black,
-        context: context,
-        selectedColor: color,
-        onChanged: (value) {
-          setState(() {
-            this.color = value;
-          });
-        });
   }
 }
