@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:painter/screens/settings_screen.dart';
 import 'package:painter/services/group_points.dart';
 import 'package:painter/services/painter.dart';
 
 import '../services/bar_button.dart';
-
 
 class CanvasScreen extends StatefulWidget {
   @override
@@ -24,13 +22,14 @@ class _CanvasScreenState extends State<CanvasScreen> {
     if (_painter != null) {
       setState(() {
         _painter.color = this.color;
+        _painter.size = this.size;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _painter = Painter(size: size, offsets: points, color: color);
+    _painter = Painter(size: size, points: points, color: color);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -61,10 +60,16 @@ class _CanvasScreenState extends State<CanvasScreen> {
             color: Colors.grey[100],
           ),
           onPressed: () async {
-            var settings = await Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SettingsScreen()));
+            var settings = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SettingsScreen(
+                          size: size,
+                          color: color,
+                        )));
             setState(() {
-              this.color = settings;
+              this.color = settings['color'];
+              this.size = settings['size'];
             });
           },
         ),
@@ -75,17 +80,19 @@ class _CanvasScreenState extends State<CanvasScreen> {
         child: GestureDetector(
           onPanDown: (details) {
             setState(() {
+              points.add(GroupPoints(
+                  offset: details.localPosition, color: color, size: size));
             });
           },
           onPanUpdate: (details) {
             setState(() {
-              points.add(
-                  GroupPoints(offset: details.localPosition, color: color));
+              points.add(GroupPoints(
+                  offset: details.localPosition, color: color, size: size));
             });
           },
           onPanEnd: (details) {
             setState(() {
-              points.add(GroupPoints(offset: null, color: color));
+              points.add(GroupPoints(offset: null, color: color, size: size));
             });
           },
           child: Center(

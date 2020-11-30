@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 
 class SettingsScreen extends StatefulWidget {
+  final double size;
+  final Color color;
+
+  const SettingsScreen({this.size, this.color});
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -13,8 +18,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    if (color == null) {
+    if (widget.color == null) {
       color = Colors.black;
+    }
+    if (widget.size == null) {
+      size = 3.0;
+    }
+    if (widget.color != null && widget.size != null) {
+      size = widget.size;
+      color = widget.color;
     }
   }
 
@@ -29,12 +41,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             color: Colors.grey[100],
           ),
           onPressed: () {
-            Navigator.pop(context, color);
+            Navigator.pop(context, {'color': color, 'size': size});
           },
         ),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ListTile(
             leading: Icon(
@@ -51,16 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: this.color,
             ),
             onTap: () {
-              showMaterialColorPicker(
-                  headerColor: Colors.grey[800],
-                  buttonTextColor: Colors.black,
-                  context: context,
-                  selectedColor: color,
-                  onChanged: (value) {
-                    setState(() {
-                      this.color = value;
-                    });
-                  });
+              getColor();
             },
           ),
           Container(
@@ -70,10 +74,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
               thickness: 1.5,
               color: Colors.black,
             ),
-
           ),
+          Slider(
+            value: size,
+            onChanged: (value) {
+              setState(() {
+                size = value;
+              });
+            },
+            min: 1.0,
+            max: 15.0,
+            divisions: 15,
+
+            inactiveColor: Colors.white,
+            activeColor: Color.fromARGB(255, 100, 100, 100),
+            label: 'Size',
+
+          )
         ],
       ),
     );
+  }
+
+  void getColor() {
+    showMaterialColorPicker(
+        headerColor: Colors.grey[800],
+        buttonTextColor: Colors.black,
+        context: context,
+        selectedColor: color,
+        onChanged: (value) {
+          setState(() {
+            this.color = value;
+          });
+        });
   }
 }
