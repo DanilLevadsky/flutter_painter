@@ -54,20 +54,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
           activeColor: Color.fromARGB(255, 100, 100, 100),
           label: 'Size',
         ),
-        FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop({'color': color, 'size': size});
-          },
-          child: Container(
-              margin: EdgeInsets.all(8.0),
-              child: Text(
-                'Submit',
-                style: TextStyle(fontSize: 30.0, color: Colors.white),
-              )),
-          color: Colors.grey[800],
-          padding: EdgeInsets.all(8.0),
-        )
+        SubmitButton(color: color, size: size)
       ]),
+    );
+  }
+}
+
+class SubmitButton extends StatelessWidget {
+  final Color color;
+  final double size;
+
+  const SubmitButton({@required this.color, @required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        height: 50,
+        width: 100,
+        decoration: BoxDecoration(
+            color: Colors.grey[800], borderRadius: BorderRadius.circular(7.0)),
+        child: Center(
+            child: Text('Submit',
+                style: TextStyle(fontSize: 18.0, color: Colors.white))),
+      ),
+      onTap: () => Navigator.of(context).pop({'color': color, 'size': size}),
     );
   }
 }
