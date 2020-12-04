@@ -8,9 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:painter/screens/canvas_screen.dart';
 
 void main() async {
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: CanvasScreen()));
   if (ifDesktop) {
-    runApp(
-        MaterialApp(debugShowCheckedModeBanner: false, home: CanvasScreen()));
     await DesktopWindow.setMinWindowSize(Size(800, 600));
     await DesktopWindow.setMaxWindowSize(Size(1440, 1024));
   }

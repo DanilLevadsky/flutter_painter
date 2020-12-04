@@ -93,7 +93,7 @@ class _CanvasScreenState extends State<CanvasScreen> {
               painter: _painter,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
               ),
             ),
           ),
