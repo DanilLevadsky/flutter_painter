@@ -54,16 +54,14 @@ class _CanvasScreenState extends State<CanvasScreen> {
             Icons.brush,
             color: Colors.grey[100],
           ),
-          onPressed: () {
-            setState(() async {
-              var settings = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SettingsScreen(color: color, size: size)));
-              this.color = settings['color'];
-              this.size = settings['size'];
-            });
+          onPressed: () async {
+            var settings = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SettingsScreen(color: color, size: size)));
+            this.color = settings['color'];
+            this.size = settings['size'];
           },
         ),
       ),

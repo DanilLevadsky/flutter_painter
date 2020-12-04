@@ -30,7 +30,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ColorPicker(
           color: color,
           onColorChanged: (value) {
-            this.color = value;
+            setState(() {
+              this.color = value;
+            });
           },
         ),
         Slider(
@@ -69,4 +71,3 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 }
-
