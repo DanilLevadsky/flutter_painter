@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:painter/services/group_points.dart';
 import 'package:painter/services/painter.dart';
-import 'package:screenshot/screenshot.dart';
 
 import '../services/bar_button.dart';
 import 'settings_screen.dart';
@@ -19,11 +16,9 @@ class _CanvasScreenState extends State<CanvasScreen> {
   double size = 3.0;
   Color color = Colors.black;
   Painter _painter;
-  ScreenshotController controller;
 
   @override
   void initState() {
-    controller = ScreenshotController();
     super.initState();
     if (_painter != null) {
       setState(() {
@@ -51,21 +46,6 @@ class _CanvasScreenState extends State<CanvasScreen> {
               });
             },
           ),
-          BarButton(
-              icon: Icon(
-                Icons.save,
-                color: Colors.grey[100],
-              ),
-              onPressed: () {
-                File _imageFile;
-                controller.capture().then((File image) {
-                  setState(() {
-                    _imageFile = image;
-                  });
-                }).catchError((onError) {
-                  print(onError);
-                });
-              })
         ],
         backgroundColor: Colors.grey[800],
         title: null,
@@ -85,36 +65,38 @@ class _CanvasScreenState extends State<CanvasScreen> {
           },
         ),
       ),
-      body: Screenshot(
-        controller: controller,
-        child: InteractiveViewer(
-          minScale: 1.0,
-          maxScale: 15.0,
-          child: GestureDetector(
-            onPanDown: (details) {
-              setState(() {
-                points.add(GroupPoints(
-                    offset: details.localPosition, color: color, size: size));
-              });
-            },
-            onPanUpdate: (details) {
-              setState(() {
-                points.add(GroupPoints(
-                    offset: details.localPosition, color: color, size: size));
-              });
-            },
-            onPanEnd: (details) {
-              setState(() {
-                points.add(GroupPoints(offset: null, color: color, size: size));
-              });
-            },
-            child: Center(
-              child: CustomPaint(
-                painter: _painter,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                ),
+      body: InteractiveViewer(
+        minScale: 1.0,
+        maxScale: 15.0,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              points.add(GroupPoints(offset: null, color: color, size: size));
+            });
+          },
+          onPanDown: (details) {
+            setState(() {
+              points.add(GroupPoints(
+                  offset: details.localPosition, color: color, size: size));
+            });
+          },
+          onPanUpdate: (details) {
+            setState(() {
+              points.add(GroupPoints(
+                  offset: details.localPosition, color: color, size: size));
+            });
+          },
+          onPanEnd: (details) {
+            setState(() {
+              points.add(GroupPoints(offset: null, color: color, size: size));
+            });
+          },
+          child: Center(
+            child: CustomPaint(
+              painter: _painter,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
               ),
             ),
           ),
