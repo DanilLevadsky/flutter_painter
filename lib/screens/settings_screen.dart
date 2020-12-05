@@ -70,13 +70,16 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
-        height: 50,
-        width: 100,
+        height: 70,
+        width: 125,
         decoration: BoxDecoration(
-            color: Colors.grey[800], borderRadius: BorderRadius.circular(7.0)),
+            color: Colors.grey[800], borderRadius: BorderRadius.circular(12.5)),
         child: Center(
-            child: Text('Submit',
-                style: TextStyle(fontSize: 18.0, color: Colors.white))),
+            child: FittedBox(
+          fit: BoxFit.fill,
+          child: Text('Submit',
+              style: TextStyle(color: Colors.white, fontSize: 20.0)),
+        )),
       ),
       onTap: () => Navigator.of(context).pop({'color': color, 'size': size}),
     );
